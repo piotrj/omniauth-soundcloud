@@ -4,22 +4,22 @@ module OmniAuth
   module Strategies
     class SoundCloud < OmniAuth::Strategies::OAuth2
       DEFAULT_SCOPE = 'non-expiring'
-      
+
       option :name, "soundcloud"
-      
+
       option :client_options, {
         :site => 'https://api.soundcloud.com',
         :authorize_url => '/connect',
         :token_url => '/oauth2/token'
       }
-      
+
       option :access_token_options, {
         :header_format => 'OAuth %s',
         :param_name => 'access_token'
       }
-      
+
       uid { raw_info['id'] }
-      
+
       info do
         prune!({
           'nickname' => raw_info['username'],
@@ -32,24 +32,24 @@ module OmniAuth
           'location' => raw_info['city']
         })
       end
-      
+
       credentials do
         prune!({
           'expires' => access_token.expires?,
           'expires_at' => access_token.expires_at
         })
       end
-      
+
       extra do
         prune!({
           'raw_info' => raw_info
         })
       end
-      
+
       def raw_info
         @raw_info ||= access_token.get('/me.json').parsed
       end
-      
+
       def build_access_token
         super.tap do |token|
           token.options.merge!(access_token_options)
@@ -62,19 +62,19 @@ module OmniAuth
 
       def authorize_params
         super.tap do |params|
-          # params.merge!(:display => request.params['display']) if request.params['display']
+          %w[display state scope].each { |v| params[v.to_sym] = request.params[v] if request.params[v] }
           params[:scope] ||= DEFAULT_SCOPE
         end
       end
-      
+
       private
-      
+
       def prune!(hash)
-        hash.delete_if do |_, value| 
+        hash.delete_if do |_, value|
           prune!(value) if value.is_a?(Hash)
           value.nil? || (value.respond_to?(:empty?) && value.empty?)
         end
-      end      
+      end
     end
   end
 end
