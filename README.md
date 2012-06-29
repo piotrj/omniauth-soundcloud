@@ -22,6 +22,50 @@ Then `bundle install`.
 
 Supports the Server-side Flow as described in the the [SoundCloud docs](http://developers.soundcloud.com/docs/api/authentication#authorization-code-flow).
 
+## Auth Hash
+
+Here's an example *Auth Hash* available in `request.env['omniauth.auth']`:
+```ruby
+{
+  "provider" => "soundcloud",
+  "uid" => 12345678,
+  "info" => {
+    "name" => "Soundcloud User",
+    "nickname" => "soundclouder",
+    "image" => "https://the.image.url",
+    "location" => "Soundcloud Town"
+  },
+  "credentials" => {
+    "token" => "123-321",
+    "expires" => false
+  },
+  "extra" => {
+    "raw_info" => {
+      "id" => 12345678,
+      "kind" => "user",
+      "permalink" => "soundclouder",
+      "username" => "soundclouder",
+      "full_name" => "Soundcloud User",
+      "uri" => "https://api.soundcloud.com/users/12345678",
+      "permalink_url" => "http://soundcloud.com/soundclouder",
+      "avatar_url" => "https://the.image.url",
+      "country" => "United States",
+      "city" => "Soundcloud Town",
+      "online" => true,
+      "track_count" => 23,
+      "playlist_count" => 12,
+      "public_favorites_count" => 123,
+      "followers_count" => 321,
+      "followings_count" => 234,
+      "plan" => "Free",
+      "private_tracks_count" => 0,
+      "private_playlists_count" => 0,
+      "primary_email_confirmed" => true
+    }
+  }
+}
+```
+
 ## License
 
 Copyright (c) 2011 by Lee Martin and SoundCloud
